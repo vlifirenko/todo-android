@@ -31,33 +31,6 @@ When a user triggers an action (e.g., adding a task or typing a search query), t
 
 ---
 
-## 📂 Project Directory Structure
-
-The project uses a clean, layered package structure inside a single module, separating infrastructure from core business rules:
-
-│
-├── data/                       # DATA LAYER (DB, Entities, Room Implementation)
-│   ├── local/
-│   │   ├── db/                 # Room Database configuration
-│   │   ├── dao/                # Data Access Objects (SQL queries)
-│   │   └── entity/             # DB schema representations (TaskEntity)
-│   └── repository/             # Repository implementation & domain mapping
-│
-├── domain/                     # DOMAIN LAYER (Pure Kotlin Business Logic)
-│   ├── model/                  # Pure data models (Task, TaskStatus)
-│   └── repository/             # Abstract Repository interfaces
-│
-├── di/                         # DEPENDENCY INJECTION LAYER
-│   └── DatabaseModule.kt       # Hilt module providing DB and Repository singletons
-│
-└── ui/                         # PRESENTATION LAYER (State & Composed Screens)
-├── screens/
-│   └── todo/                 # Kanban feature screen
-│       ├── TodoScreen.kt
-│       ├── TodoViewModel.kt
-│       └── TodoUiState.kt
-└── theme/                      # Material 3 Design token configurations
-
 ## 🧪 Testing Strategy
 
 Core business logic, reactive flow combinations, and UI state mutations within the `TodoViewModel` are fully covered by local **Unit Tests**.
