@@ -23,9 +23,6 @@ The application features a strict separation of concerns into distinct layers (*
 The project strictly adheres to the Unidirectional Data Flow (UDF) pattern:
 
 [ Room Database ] ---> Updates streamed via Flow
-⬇
 [ TaskRepository ] ---> Business models mapping
-⬇
 [ TodoViewModel ] ---> Combines DB Flow + Search State Flow
-⬇ Recomputed State: StateFlow
 [ Jetpack Compose UI ] ---> Safe collection via collectAsStateWithLifecycle()
