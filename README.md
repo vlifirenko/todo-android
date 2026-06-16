@@ -26,3 +26,42 @@ The project strictly adheres to the Unidirectional Data Flow (UDF) pattern:
 [ TaskRepository ] ---> Business models mapping
 [ TodoViewModel ] ---> Combines DB Flow + Search State Flow
 [ Jetpack Compose UI ] ---> Safe collection via collectAsStateWithLifecycle()
+
+When a user triggers an action (e.g., adding a task or typing a search query), the event is dispatched to the `ViewModel`. The `ViewModel` mutates the internal stream, the `Room` database updates, and the changes automatically ripple back up to update the UI reactively.
+
+---
+
+## 📂 Project Directory Structure
+
+The project uses a clean, layered package structure inside a single module, separating infrastructure from core business rules:
+
+│
+├── data/                       # DATA LAYER (DB, Entities, Room Implementation)
+│   ├── local/
+│   │   ├── db/                 # Room Database configuration
+│   │   ├── dao/                # Data Access Objects (SQL queries)
+│   │   └── entity/             # DB schema representations (TaskEntity)
+│   └── repository/             # Repository implementation & domain mapping
+│
+├── domain/                     # DOMAIN LAYER (Pure Kotlin Business Logic)
+│   ├── model/                  # Pure data models (Task, TaskStatus)
+│   └── repository/             # Abstract Repository interfaces
+│
+├── di/                         # DEPENDENCY INJECTION LAYER
+│   └── DatabaseModule.kt       # Hilt module providing DB and Repository singletons
+│
+└── ui/                         # PRESENTATION LAYER (State & Composed Screens)
+├── screens/
+│   └── todo/                 # Kanban feature screen
+│       ├── TodoScreen.kt
+│       ├── TodoViewModel.kt
+│       └── TodoUiState.kt
+└── theme/                      # Material 3 Design token configurations
+
+## 🧪 Testing Strategy
+
+Core business logic, reactive flow combinations, and UI state mutations within the `TodoViewModel` are fully covered by local **Unit Tests**.
+
+* **MockK:** Used to isolate the presentation layer by stubbing and verifying repository behaviors.
+* **Turbine:** Utilized for crisp, synchronous testing of asynchronous Kotlin `StateFlow` emissions.
+* **MainDispatcherRule:** A custom JUnit4 rule implemented to seamlessly swap the Android `Dispatchers.Main` thread with an `UnconfinedTestDispatcher` in a JVM test environment.
